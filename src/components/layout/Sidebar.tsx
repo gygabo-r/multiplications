@@ -11,7 +11,7 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col w-52 min-h-screen bg-white border-r border-gray-100 p-4 gap-2">
       <div className="mb-4 px-2">
-        <h1 className="text-xl font-bold text-indigo-600">Szorzótábla</h1>
+        <h1 className="text-xl font-bold text-pink-600">Szorzótábla</h1>
         <p className="text-xs text-muted-foreground">Tanuljuk együtt!</p>
       </div>
       {NAV_ITEMS.map(item => (
@@ -23,7 +23,7 @@ export function Sidebar() {
             cn(
               'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
               isActive
-                ? 'bg-indigo-50 text-indigo-700'
+                ? 'bg-pink-50 text-pink-700'
                 : 'text-gray-600 hover:bg-gray-50'
             )
           }

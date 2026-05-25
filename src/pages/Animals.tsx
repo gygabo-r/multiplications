@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { getAnimalCollection } from '@/db/queries'
 import type { DailyAnimal } from '@/db/index'
 import { Card, CardContent } from '@/components/ui/card'
+import { AnimalAwardOverlay } from '@/components/animals/AnimalAwardOverlay'
 
 export default function Animals() {
   const [animals, setAnimals] = useState<DailyAnimal[]>([])
+  const [replayAnimal, setReplayAnimal] = useState<string | null>(null)
 
   useEffect(() => {
     getAnimalCollection().then(setAnimals)
@@ -33,7 +35,8 @@ export default function Animals() {
             <div
               key={a.id}
               title={a.date}
-              className="flex flex-col items-center gap-1 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+              onClick={() => setReplayAnimal(a.animal)}
+              className="flex flex-col items-center gap-1 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-pink-200 active:scale-95 transition-all cursor-pointer"
             >
               <span className="text-4xl">{a.animal}</span>
               <span className="text-[10px] text-muted-foreground">{a.date.slice(5)}</span>
@@ -41,6 +44,8 @@ export default function Animals() {
           ))}
         </div>
       )}
+
+      <AnimalAwardOverlay animal={replayAnimal} onDismiss={() => setReplayAnimal(null)} />
     </div>
   )
 }

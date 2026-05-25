@@ -22,10 +22,10 @@ function TablePicker() {
         {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
           <Card
             key={n}
-            className="cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all border-2 active:scale-95"
+            className="cursor-pointer hover:border-pink-400 hover:shadow-md transition-all border-2 active:scale-95"
             onClick={() => navigate(`/memorize/${n}`)}
           >
-            <CardContent className="flex items-center justify-center h-16 text-2xl font-bold text-indigo-600">
+            <CardContent className="flex items-center justify-center h-16 text-2xl font-bold text-pink-600">
               {n}×
             </CardContent>
           </Card>
@@ -73,7 +73,7 @@ function SessionRunner({ table }: { table: number }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" onClick={() => navigate('/memorize')}>← Táblázat</Button>
-        <span className="text-sm font-medium text-indigo-600">{table}× szorzótábla</span>
+        <span className="text-sm font-medium text-pink-600">{table}× szorzótábla</span>
       </div>
       <FruitTray fruits={state.fruits} />
       <SessionProgressBar current={current} total={total} phase={state.phase} />

@@ -22,7 +22,7 @@ function CalendarHeatmap({ dates }: { dates: string[] }) {
           <div
             key={cell.date}
             title={cell.date}
-            className={`w-6 h-6 rounded-sm ${cell.active ? 'bg-indigo-500' : 'bg-gray-100'}`}
+            className={`w-6 h-6 rounded-sm ${cell.active ? 'bg-pink-500' : 'bg-pink-100'}`}
           />
         ))}
       </div>
@@ -37,7 +37,7 @@ function TableGrid({ stats }: { stats: TableStats[] }) {
       {stats.map(s => (
         <Card key={s.table} className="text-center">
           <CardContent className="pt-3 pb-2 px-2">
-            <div className="text-lg font-bold text-indigo-600">{s.table}×</div>
+            <div className="text-lg font-bold text-pink-600">{s.table}×</div>
             {s.totalSessions === 0 ? (
               <div className="text-xs text-muted-foreground mt-1">Nincs adat</div>
             ) : (

@@ -16,7 +16,7 @@ export function ModeCard({ icon, title, description, available, onClick }: ModeC
       className={cn(
         'cursor-pointer transition-all border-2',
         available
-          ? 'hover:border-indigo-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'
+          ? 'hover:border-pink-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'
           : 'opacity-60 cursor-not-allowed'
       )}
       onClick={available ? onClick : undefined}

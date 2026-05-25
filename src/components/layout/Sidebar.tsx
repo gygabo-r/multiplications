@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Módok', icon: '🎮' },
-  { to: '/memorize', label: 'Memorizálás', icon: '📖' },
   { to: '/stats', label: 'Statisztikák', icon: '📊' },
   { to: '/animals', label: 'Állataim', icon: '🐾' },
 ]

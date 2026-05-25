@@ -9,36 +9,6 @@ const MODES = [
     available: true,
     path: '/memorize',
   },
-  {
-    icon: '⏱️',
-    title: 'Gyorsasági kihívás',
-    description: 'Minél több helyes válasz 60 másodperc alatt!',
-    available: false,
-  },
-  {
-    icon: '🌐',
-    title: 'Vegyes kör',
-    description: 'Véletlenszerű kérdések az összes szorzótáblából.',
-    available: false,
-  },
-  {
-    icon: '🔲',
-    title: 'Táblázat-kitöltés',
-    description: 'Töltsd ki a 10×10-es szorzótáblát!',
-    available: false,
-  },
-  {
-    icon: '🔍',
-    title: 'Nyomozó mód',
-    description: 'Az eredményből találd ki a szorzókat!',
-    available: false,
-  },
-  {
-    icon: '🔥',
-    title: 'Sorozat mód',
-    description: 'Egy hibával vége – meddig bírod?',
-    available: false,
-  },
 ]
 
 export default function Home() {

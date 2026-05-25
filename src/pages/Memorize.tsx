@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -31,7 +31,6 @@ function TablePicker() {
           </Card>
         ))}
       </div>
-      <Button variant="outline" onClick={() => navigate('/')}>← Vissza</Button>
     </div>
   )
 }
@@ -40,16 +39,17 @@ function SessionRunner({ table }: { table: number }) {
   const navigate = useNavigate()
   const { state, currentQuestion, submitAnswer, persistSession } = useSession(table)
   const { pendingAnimal, awardIfNew, clearPending } = useDailyAnimal()
-  const [sessionSaved, setSessionSaved] = useState(false)
 
-  async function handleDone() {
-    if (!sessionSaved) {
-      await persistSession()
-      setSessionSaved(true)
-      await awardIfNew()
-    }
-    navigate('/')
-  }
+  // Tracks whether we've already saved + awarded for this session
+  const savedRef = useRef(false)
+
+  // As soon as the phase flips to 'summary', persist + try to award — don't wait for button click
+  useEffect(() => {
+    if (state.phase !== 'summary' || savedRef.current) return
+    savedRef.current = true
+
+    persistSession().then(() => awardIfNew())
+  }, [state.phase]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (state.phase === 'summary') {
     return (
@@ -58,8 +58,9 @@ function SessionRunner({ table }: { table: number }) {
           table={table}
           records={state.records}
           fruits={state.fruits}
-          onDone={handleDone}
+          onDone={() => navigate('/')}
         />
+        {/* Overlay sits on top of summary; user dismisses it, then sees the summary */}
         <AnimalAwardOverlay animal={pendingAnimal} onDismiss={clearPending} />
       </>
     )

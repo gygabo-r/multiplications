@@ -3,9 +3,8 @@ import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Módok', icon: '🎮' },
-  { to: '/memorize', label: 'Tanulás', icon: '📖' },
-  { to: '/stats', label: 'Statisz.', icon: '📊' },
-  { to: '/animals', label: 'Állatok', icon: '🐾' },
+  { to: '/stats', label: 'Statisztikák', icon: '📊' },
+  { to: '/animals', label: 'Állataim', icon: '🐾' },
 ]
 
 export function BottomNav() {

@@ -1,73 +1,29 @@
-# React + TypeScript + Vite
+# Szorzótábla 🐝
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Egy játékos matematika-gyakorló app Gvendolinnak. Szorzás, összeadás és kivonás – sorrendben, majd keverve. Minden helyes válasz után egy gyümölcs kerül a tálcára, naponta pedig egy új állatot lehet szerezni a gyűjteménybe.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Telepítés a telefonra / számítógépre
 
-## React Compiler
+Az app közvetlenül a böngészőből telepíthető, külön letöltés nélkül.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Android (Chrome)
 
-## Expanding the ESLint configuration
+1. Nyisd meg az oldalt Chrome-ban.
+2. Koppints a jobb felső sarokban lévő **⋮** menüre.
+3. Válaszd az **„App telepítése"** vagy **„Hozzáadás a kezdőképernyőhöz"** lehetőséget.
+4. Erősítsd meg – az ikon megjelenik a kezdőképernyőn.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### iPhone / iPad (Safari)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Nyisd meg az oldalt Safariban.
+2. Koppints alul a **Megosztás** gombra (négyzet felfelé mutató nyíllal).
+3. Görgess le, és válaszd a **„Főképernyőre helyezés"** lehetőséget.
+4. Koppints a jobb felső sarokban a **„Hozzáadás"** gombra.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Számítógép (Chrome / Edge)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Nyisd meg az oldalt.
+2. A címsor jobb szélén kattints a **⊕** ikonra (vagy a ⋮ menüben keresd a **„Szorzótábla telepítése"** lehetőséget).
+3. Kattints a **„Telepítés"** gombra – az app ezután önálló ablakban is megnyitható.

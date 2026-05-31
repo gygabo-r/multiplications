@@ -1,54 +1,86 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Confetti } from '@/components/ui/Confetti'
+import { getModeConfig } from '@/lib/modes'
 import type { QuestionRecord } from '@/db/index'
+import type { Mode } from '@/lib/tables'
 import { useNavigate } from 'react-router-dom'
 
 interface SummaryScreenProps {
-  table: number
+  mode: Mode
+  n: number
   records: QuestionRecord[]
   fruits: string[]
-  onDone: () => void
+  onReplay: () => void
 }
 
-export function SummaryScreen({ table, records, fruits, onDone }: SummaryScreenProps) {
+export function SummaryScreen({ mode, n, records, fruits, onReplay }: SummaryScreenProps) {
   const navigate = useNavigate()
+  const cfg = getModeConfig(mode)
   const firstTry = records.filter(r => r.firstTryCorrect).length
   const total = records.length
+  const rate = total > 0 ? Math.round((firstTry / total) * 100) : 0
 
   return (
-    <div className="flex flex-col items-center gap-6 py-8">
-      <div className="text-5xl">🎉</div>
-      <h2 className="text-2xl font-bold">Kész! Remek munka!</h2>
-      <Card className="w-full max-w-sm">
-        <CardContent className="pt-6 space-y-3">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Szorzótábla</span>
-            <span className="font-semibold">{table}×</span>
+    <div className="screen-in" style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 24,
+      padding: '40px 20px',
+    }}>
+      <Confetti count={50} />
+
+      <div style={{ fontSize: 76, lineHeight: 1 }}>🎉</div>
+      <h1 style={{ fontSize: 46, fontWeight: 700, color: 'var(--ink)', margin: 0, textAlign: 'center' }}>
+        Szuper munka!
+      </h1>
+      <div style={{ fontSize: 48, lineHeight: 1 }}>🐝</div>
+
+      {/* Stats panel */}
+      <div style={{
+        width: '100%',
+        maxWidth: 460,
+        background: 'var(--surface)',
+        borderRadius: 28,
+        padding: '26px 30px',
+        boxShadow: '0 8px 0 var(--line)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 14,
+      }}>
+        <Row label="Mód" value={`${cfg.symbol} ${cfg.label}`} />
+        <Row label="Szám" value={String(n)} />
+        <Row label="Elsőre jó" value={`${rate}%`} accent />
+        <div style={{ borderTop: '1px solid var(--line)', paddingTop: 12 }}>
+          <div style={{ fontSize: 14, color: 'var(--sub)', marginBottom: 6 }}>
+            Összegyűjtve ({fruits.length} db)
           </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Kérdések száma</span>
-            <span className="font-semibold">{total}</span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {fruits.map((f, i) => <span key={i} style={{ fontSize: 24 }}>{f}</span>)}
           </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Első próbára helyes</span>
-            <span className="font-semibold">{firstTry}/{total}</span>
-          </div>
-          <div className="pt-2">
-            <div className="text-sm text-muted-foreground mb-1">Összegyűjtött gyümölcsök</div>
-            <div className="flex flex-wrap gap-1">
-              {fruits.map((f, i) => <span key={i} className="text-xl">{f}</span>)}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      <div className="flex gap-3">
-        <Button variant="outline" onClick={() => navigate('/memorize')}>
-          Újra
-        </Button>
-        <Button onClick={onDone}>
-          Főmenü
-        </Button>
+        </div>
       </div>
+
+      <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+        <button className="key" style={{ padding: '14px 28px', fontSize: 18, borderRadius: 999 }} onClick={onReplay}>
+          Még egyszer
+        </button>
+        <button className="pbtn" onClick={() => navigate('/')}>
+          Főmenü
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function Row({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <span style={{ color: 'var(--sub)', fontSize: 16 }}>{label}</span>
+      <span style={{
+        fontWeight: 700,
+        fontSize: 18,
+        color: accent ? 'var(--primary)' : 'var(--ink)',
+      }}>{value}</span>
     </div>
   )
 }

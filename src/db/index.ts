@@ -10,6 +10,7 @@ export interface QuestionRecord {
 export interface Session {
   id?: number
   date: string
+  mode: string
   table: number
   completedAt: number
   questions: QuestionRecord[]
@@ -32,6 +33,14 @@ class AppDB extends Dexie {
       sessions: '++id, date, table, completedAt',
       animals: '++id, date'
     })
+    this.version(2).stores({
+      sessions: '++id, date, mode, table, completedAt',
+      animals: '++id, date'
+    }).upgrade(tx =>
+      tx.table('sessions').toCollection().modify((s: Session) => {
+        if (!s.mode) s.mode = 'multiply'
+      })
+    )
   }
 }
 

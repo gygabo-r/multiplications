@@ -13,7 +13,7 @@ export default function Animals() {
   }, [])
 
   return (
-    <div className="space-y-6">
+    <div className="screen-in" style={{ padding: '48px 56px', display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
         <h1 className="text-2xl font-bold">Állatgyűjtemény 🐾</h1>
         <p className="text-muted-foreground mt-1">

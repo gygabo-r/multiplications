@@ -1,0 +1,196 @@
+/* ===== Math for Gvendolin — redesign prototype ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  background: #1b1d29;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  overflow: hidden;
+  color: #2a2530;
+}
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input { font-family: inherit; }
+
+/* ---- Stage / scaling ---- */
+#stage {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(900px 600px at 20% 10%, #2b2e44, transparent),
+    radial-gradient(900px 600px at 90% 90%, #2a2540, transparent),
+    #14151f;
+}
+#fit { transform-origin: center center; }
+
+/* ---- Direction switcher chrome ---- */
+#switcher {
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 60;
+  display: flex; gap: 4px; padding: 5px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+}
+#switcher button {
+  color: rgba(255,255,255,0.62);
+  font-size: 15px; font-weight: 600;
+  padding: 9px 18px; border-radius: 999px;
+  transition: all .2s ease; white-space: nowrap;
+}
+#switcher button:hover { color: #fff; }
+#switcher button.active { background: #fff; color: #1b1d29; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+
+/* ---- iPad bezel ---- */
+.ipad {
+  width: 1194px; height: 834px;
+  background: #0c0d12;
+  border-radius: 46px;
+  padding: 16px;
+  box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 0 2px rgba(255,255,255,.04) inset;
+  position: relative;
+}
+.ipad-cam {
+  position: absolute; top: 50%; left: 8px; transform: translateY(-50%);
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #232530; box-shadow: 0 0 0 2px #15161d;
+}
+.screen {
+  width: 100%; height: 100%;
+  border-radius: 32px; overflow: hidden;
+  position: relative;
+  background: #FFF8F0;
+}
+
+/* ---- App root / theme defaults ---- */
+.app {
+  --bg: #FFF8F0; --surface: #ffffff; --ink: #3a2e2a; --sub: #a99f98;
+  --primary: #3DD68C; --primary-ink: #0b3d2e; --accent: #FF6B8B;
+  --ring: #FFD23F; --line: rgba(0,0,0,.06);
+  --radius: 30px;
+  width: 100%; height: 100%;
+  position: relative; overflow: hidden;
+  background: var(--bg);
+  font-family: var(--app-font, 'Fredoka', sans-serif);
+  color: var(--ink);
+  display: flex; flex-direction: column;
+}
+
+/* ===== screen transition ===== */
+.screen-enter { animation: screenIn .42s cubic-bezier(.2,.9,.25,1.05) both; }
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(14px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ===== content scroll region ===== */
+.scroll { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.scroll::-webkit-scrollbar { width: 0; }
+
+/* ===== generic playful button ===== */
+.pbtn {
+  border-radius: 999px; font-weight: 700; color: #fff;
+  background: var(--primary);
+  box-shadow: 0 7px 0 var(--primary-shadow, rgba(0,0,0,.18));
+  transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+}
+.pbtn:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--primary-shadow, rgba(0,0,0,.18)); }
+.pbtn:hover { filter: brightness(1.04); }
+
+/* ===== keypad keys ===== */
+.key {
+  border-radius: 22px;
+  font-weight: 700;
+  background: var(--key-bg, #fff);
+  color: var(--key-ink, var(--ink));
+  box-shadow: 0 5px 0 var(--key-shadow, rgba(0,0,0,.10));
+  transition: transform .07s ease, box-shadow .07s ease, background .12s;
+  display: flex; align-items: center; justify-content: center;
+  user-select: none;
+}
+.key:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--key-shadow, rgba(0,0,0,.10)); }
+
+/* ===== animations ===== */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  15% { transform: translateX(-12px) rotate(-1deg); }
+  30% { transform: translateX(12px) rotate(1deg); }
+  45% { transform: translateX(-9px); }
+  60% { transform: translateX(9px); }
+  80% { transform: translateX(-4px); }
+}
+.shake { animation: shake .42s ease-in-out; }
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+.pop { animation: pop .35s ease; }
+
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+.bob { animation: bob 2.6s ease-in-out infinite; }
+
+@keyframes float-y { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-16px) rotate(var(--r,0deg)); } }
+
+@keyframes spinwobble { 0%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} 100%{transform:rotate(-8deg)} }
+
+@keyframes trayIn {
+  0% { transform: scale(0) translateY(-30px); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.tray-in { animation: trayIn .5s cubic-bezier(.2,.9,.3,1.3) both; }
+
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0); opacity: 1; }
+  100% { transform: translateY(720px) rotate(720deg); opacity: 0; }
+}
+@keyframes rewardPop {
+  0% { transform: scale(0) rotate(-25deg); }
+  55% { transform: scale(1.25) rotate(8deg); }
+  75% { transform: scale(.92) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+.reward-pop { animation: rewardPop .8s cubic-bezier(.2,.9,.3,1.2) both; }
+
+@keyframes sparkle {
+  0%,100% { opacity: 0; transform: scale(.4); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes glowPulse {
+  0%,100% { filter: drop-shadow(0 0 8px var(--accent)); }
+  50% { filter: drop-shadow(0 0 22px var(--accent)); }
+}
+@keyframes correctFlash {
+  0% { box-shadow: 0 0 0 0 var(--primary); }
+  100% { box-shadow: 0 0 0 40px transparent; }
+}
+.flash { animation: correctFlash .6s ease-out; }
+
+@keyframes risepop {
+  0% { transform: translateY(8px) scale(.96); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes streakFlame {
+  0%,100% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.12) rotate(3deg); }
+}
+
+/* big equation number reveal */
+@keyframes eqIn {
+  0% { transform: scale(.7) translateY(10px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.eq-in { animation: eqIn .4s cubic-bezier(.2,.9,.3,1.15) both; }
+
+/* ===== direction-specific screen backgrounds ===== */
+.dir-space .screen-bg, .dir-space .app { color: var(--ink); }
+
+.bg-decor { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.bg-decor > * { position: absolute; }
+.blob { border-radius: 50%; filter: blur(2px); opacity: .5; }
+.starbit { border-radius: 50%; background: #fff; animation: sparkle 3s ease-in-out infinite; }
+
+/* ensure content above decor */
+.layer { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; }

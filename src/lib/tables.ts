@@ -1,17 +1,27 @@
+export type Mode = 'multiply' | 'add' | 'subtract'
+
 export interface Question {
   a: number
   b: number
+  op: string
+  ans: number
 }
 
-/** Returns questions for table b, sequential order 1×b … 10×b */
-export function buildSequentialQuestions(table: number): Question[] {
-  return Array.from({ length: 10 }, (_, i) => ({ a: i + 1, b: table }))
+function buildQuestions(mode: Mode, n: number): Question[] {
+  return Array.from({ length: 10 }, (_, i) => {
+    const idx = i + 1
+    if (mode === 'add') return { a: idx, b: n, op: '+', ans: idx + n }
+    if (mode === 'subtract') return { a: idx + n, b: n, op: '−', ans: idx }
+    return { a: idx, b: n, op: '×', ans: idx * n }
+  })
 }
 
-/** Returns questions for table b, random order */
-export function buildRandomQuestions(table: number): Question[] {
-  const qs = buildSequentialQuestions(table)
-  // Fisher-Yates
+export function buildSequentialQuestions(mode: Mode, n: number): Question[] {
+  return buildQuestions(mode, n)
+}
+
+export function buildRandomQuestions(mode: Mode, n: number): Question[] {
+  const qs = buildQuestions(mode, n)
   for (let i = qs.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [qs[i], qs[j]] = [qs[j], qs[i]]

@@ -1,4 +1,5 @@
-import { Outlet, NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { Outlet, NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
@@ -7,47 +8,93 @@ const NAV_ITEMS = [
   { to: '/stats', label: 'Statok', icon: '📊', end: false },
 ]
 
-function NavItem({ to, label, icon, end }: typeof NAV_ITEMS[0]) {
-  return (
-    <NavLink
-      to={to}
-      end={end}
-      className={({ isActive }) =>
-        cn(
-          'flex flex-col items-center gap-1 px-4 py-2 rounded-2xl text-sm font-semibold transition-all',
-          isActive
-            ? 'text-[var(--primary-ink)] bg-[var(--primary)]'
-            : 'text-[var(--sub)] hover:text-[var(--ink)]'
-        )
-      }
-    >
-      <span style={{ fontSize: 22 }}>{icon}</span>
-      <span style={{ fontSize: 13 }}>{label}</span>
-    </NavLink>
-  )
+function isPlayRoute(pathname: string) {
+  return pathname.includes('/play/')
 }
 
 export function AppLayout() {
+  const location = useLocation()
+  const [open, setOpen] = useState(false)
+  const hideMenu = isPlayRoute(location.pathname)
+
   return (
-    <div style={{ minHeight: '100dvh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
-      <main style={{ flex: 1, overflow: 'auto' }}>
+    <div style={{ minHeight: '100dvh', background: 'var(--bg)', position: 'relative' }}>
+      <main>
         <Outlet />
       </main>
 
-      {/* Bottom nav */}
-      <nav style={{
-        position: 'sticky',
-        bottom: 0,
-        background: 'var(--surface)',
-        borderTop: '2px solid var(--line)',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: 8,
-        padding: '8px 16px',
-        zIndex: 40,
-      }}>
-        {NAV_ITEMS.map(item => <NavItem key={item.to} {...item} />)}
-      </nav>
+      {/* Backdrop */}
+      {open && (
+        <div
+          style={{ position: 'fixed', inset: 0, zIndex: 40 }}
+          onPointerDown={() => setOpen(false)}
+        />
+      )}
+
+      {/* Nav drawer */}
+      {open && (
+        <div style={{
+          position: 'fixed',
+          bottom: 80,
+          right: 20,
+          background: 'var(--surface)',
+          borderRadius: 24,
+          boxShadow: '0 8px 32px rgba(67,53,46,0.18)',
+          padding: '8px',
+          zIndex: 50,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+          minWidth: 180,
+        }}>
+          {NAV_ITEMS.map(item => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                cn(
+                  'flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all',
+                  isActive
+                    ? 'text-[var(--primary-ink)] bg-[var(--primary)]'
+                    : 'text-[var(--ink)]'
+                )
+              }
+            >
+              <span style={{ fontSize: 22 }}>{item.icon}</span>
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      )}
+
+      {/* Floating hamburger button */}
+      {!hideMenu && (
+        <button
+          className="key"
+          style={{
+            position: 'fixed',
+            bottom: 20,
+            right: 20,
+            width: 56,
+            height: 56,
+            borderRadius: 18,
+            fontSize: 22,
+            zIndex: 50,
+            background: open ? 'var(--primary)' : 'var(--surface)',
+            color: open ? 'var(--primary-ink)' : 'var(--ink)',
+            boxShadow: open
+              ? '0 5px 0 var(--primary-shadow)'
+              : '0 5px 0 var(--key-shadow)',
+            touchAction: 'none',
+          }}
+          onPointerDown={e => { e.preventDefault(); setOpen(o => !o) }}
+          aria-label="Menü"
+        >
+          {open ? '✕' : '☰'}
+        </button>
+      )}
     </div>
   )
 }

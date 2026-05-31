@@ -22,8 +22,10 @@ Az app közvetlenül a böngészőből telepíthető, külön letöltés nélkü
 3. Görgess le, és válaszd a **„Főképernyőre helyezés"** lehetőséget.
 4. Koppints a jobb felső sarokban a **„Hozzáadás"** gombra.
 
-### Számítógép (Chrome / Edge)
+### Számítógép (Chrome vagy Edge)
 
-1. Nyisd meg az oldalt.
+Firefox sajnos nem támogatja az appok telepítését, ezért ehhez Chrome-ot vagy Edge-et érdemes használni.
+
+1. Nyisd meg az oldalt Chrome-ban vagy Edge-ben.
 2. A címsor jobb szélén kattints a **⊕** ikonra (vagy a ⋮ menüben keresd a **„Szorzótábla telepítése"** lehetőséget).
 3. Kattints a **„Telepítés"** gombra – az app ezután önálló ablakban is megnyitható.

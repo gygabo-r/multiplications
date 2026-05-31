@@ -61,9 +61,12 @@ export function Keypad({ value, onChange, onSubmit, disabled }: KeypadProps) {
             background: k.bg ?? 'var(--key-bg)',
             color: k.color ?? 'var(--key-ink)',
             boxShadow: `0 5px 0 ${k.bg ? 'rgba(0,0,0,0.15)' : 'var(--key-shadow)'}`,
+            touchAction: 'none',
           }}
-          onMouseDown={e => { e.preventDefault(); k.action() }}
-          onTouchStart={e => { e.preventDefault(); k.action() }}
+          onPointerDown={e => {
+            e.preventDefault()
+            if (!disabled) k.action()
+          }}
           disabled={disabled}
         >
           {k.label}
